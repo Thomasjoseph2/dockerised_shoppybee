@@ -1,0 +1,39 @@
+
+
+<div style="margin-top: 9rem;" class="row container">
+  <form action="/admin/add-coupon" method="post" class="col-md-6 ml-5 mt-5" onsubmit="return validateForm()">
+    <div class="form-group">
+      <label for="coupon-code">Coupon Code</label>
+      <input type="text" class="form-control" id="coupon-code" name="couponcode" placeholder="Coupon Code" required>
+      <div id="coupon-code-error" class="error-message"></div>
+    </div>
+    
+    {{#if couponExists}}
+    <div class="alert alert-danger" role="alert">
+      {{couponExists}}
+    </div>
+    {{/if}}
+    
+    <div class="form-group">
+      <label for="purchase-amount">Purchase Amount</label>
+      <input type="text" class="form-control" id="purchase-amount" name="purchaseamound" placeholder="Enter Purchase Amount" required>
+      <div id="purchase-amount-error" class="error-message"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="expiry">Expiry</label>
+      <input type="number" class="form-control" id="expiry" name="expiary" placeholder="Expires in" required>
+      <div id="expiry-error" class="error-message"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="discount">Discount</label>
+      <input type="number" class="form-control" id="discount" name="discount" placeholder="Enter the discount" min="0" max="99" required>
+      <div id="discount-error" class="error-message"></div>
+    </div>
+   
+    <button style="background-color: #f2ae0f; color: antiquewhite;" type="submit" class="btn">Add Coupon</button>
+  </form>
+</div>
+<script src="/javascripts/add-coupon.js"></script>
+

@@ -1,0 +1,90 @@
+{{!-- 
+
+<section>
+ 
+
+    <div class="row justify-content-center">
+      {{#each productDetails}}
+      <div class="col-md-4 mt-5" style="width: 15rem; height: 23rem;">
+        <div class="card mb-4">
+          <img style="width: 10vh;height:10vh" src="/product-images/{{this.product._id}}.jpg" class="card-img-top" alt="{{this.product.name}}">
+          <div class="card-body">
+            <h5 class="card-title">{{this.product.productName}}</h5>
+            <p class="card-text">{{this.product.productDescription}}</p>
+            <p class="card-text">Price: ₹ {{this.product.productPrice}}</p>
+            <p class="card-text">Quantity: {{this.quantity}}</p>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</section> --}}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Order List</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="category.html">Cart</a>
+                    </nav>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    <!-- End Banner Area -->  
+    <section>
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive mt-3">
+                    <table class="table" id="myTable">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <h5>Image</h5></th>
+                                <th scope="col"> <h5>Description</h5></th>
+                                <th scope="col"> <h5>Price</h5></th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{#each productDetails}}
+                            <tr>
+                                 <td>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <img style="width:14vh;height:10vh"
+                                            src="/product-images/{{this.product.images.[0]}}" alt="">
+                                    </div>
+                                    <div class="media-body">
+                                        <p>{{this.product.productName}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                              
+                                <td>{{this.product.productDescription}}</td>
+                                <td>
+                                    <h5>₹{{this.product.productPrice}}/-</h5>
+                                </td>
+              
+                            </tr>
+                           {{/each}}
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--================End Cart Area =================-->
+
+    
+    <script src="/javascripts/order-summary.js"></script>
+

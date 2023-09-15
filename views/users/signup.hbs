@@ -1,0 +1,109 @@
+<style>
+  .error {
+    color: red;
+  }
+</style>
+
+  <section class="login_box_area section_gap mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="login_box_img">
+            <img class="img-fluid" src="/img/login.jpg" alt="">
+            <div class="hover">
+              <h4>Welcome...</h4>
+              <p>There are advances being made in science and technology everyday, and a good example of this is the
+                Electronic Watches</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="login_form_inner">
+            <h3>Signup</h3>
+			      {{#if verifyErr}} <h4>seems like you dont have an account </h4>{{/if}}
+            <form class="row login_form" action="/signup" method="post" id="contactForm">
+              <div class="col-md-12 form-group">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Full Name"
+                  onfocus="this.placeholder = ''" onblur="this.placeholder = 'Full Name'">
+                <span id="nameError" class="error"></span>
+              </div>
+              <div class="col-md-12 form-group">
+                <input type="text" class="form-control" id="Email" name="email" placeholder="Email"
+                  onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
+                <span id="emailError" class="error"></span>
+                {{#if emailError}}<h7 class="text-danger text-center">{{ emailError}} </h7>{{/if}}
+                 
+              </div>
+              <div class="col-md-12 form-group">
+                <input type="text" class="form-control" id="phoneNumber" name="phonenumber" placeholder="Phone Number"
+                  onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'" value="+91" required>
+                <span id="phoneNumberError" class="error"></span>
+                     {{#if phoneError}}<h7 class="text-danger text-center">{{phoneError}} </h7>{{/if}}
+              </div>
+              <div class="col-md-12 form-group">
+                <input type="text" class="form-control" id="referalCode" name="referalCode" placeholder="Referal Code (optional)"
+                  onfocus="this.placeholder = ''" onblur="this.placeholder = 'Referal Code'" >
+              </div>
+              <div class="col-md-12 form-group">
+                <input type="password" class="form-control" id="Password" name="password" placeholder="Password"
+                  onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                <span id="passwordError" class="error"></span>
+              </div>
+
+               <div class="col-md-12 form-group">
+                <input type="password" class="form-control" id="confirmpassword"  placeholder="Confirm Password"
+                  onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                <span id="confirmPasswordError" class="error"></span>
+              </div>
+
+                {{#if message}} <p class="text-success">{{message}}</p>{{/if}}
+                  
+              <div class="col-md-12 form-group">
+                <button type="submit" value="submit" class="primary-btn">Sign Up</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+
+<script src="/javascripts/signup.js"></script>
+
+<script>
+  const form = document.getElementById("contactForm");
+  const passwordInput = document.getElementById("Password");
+  const confirmPasswordInput = document.getElementById("confirmpassword");
+  const passwordError = document.getElementById("passwordError");
+  const confirmPasswordError = document.getElementById("confirmpasswordError");
+
+  form.addEventListener("submit", function(event) {
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    // Password validation
+    if (!isStrongPassword(password)) {
+      event.preventDefault();
+      passwordError.textContent = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+    } else {
+      passwordError.textContent = "";
+    }
+
+    // Confirm Password validation
+    if (password !== confirmPassword) {
+      event.preventDefault();
+      confirmPasswordError.textContent = "Passwords do not match.";
+    } else {
+      confirmPasswordError.textContent = "";
+    }
+  });
+
+  // Password strength validation function
+  function isStrongPassword(password) {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  }
+</script>

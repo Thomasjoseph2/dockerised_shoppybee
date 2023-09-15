@@ -1,0 +1,216 @@
+
+<section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Checkout</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="single-product.html">Checkout</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap">
+        <div class="container">
+             <div class="cupon_area">
+    {{#if this.coupon}}
+  <div class="check_title">
+    <h2 class="text-success">Coupon Applied!!!</h2>
+  </div>
+<form action="/remove-coupon" method="post" id="remove-coupon-form">
+
+  <input type="hidden" name="_csrf" value="{{couponCode}}">
+  <input style="background-color: rgb(31, 176, 31); color: aliceblue" type="text" name="couponCode" id="couponCode" placeholder="Enter coupon code" value="{{couponCode}}" disabled>
+  <div id="couponMessage"></div>
+  <button class="btn btn-danger" type="submit" id="removeCouponButton">Remove Coupon</button>
+
+</form>
+
+{{else}}
+ <div class="check_title">
+    <h2>Have a coupon? <a href="#">Click here to enter your code</a></h2>
+  </div>
+ <form action="/apply-coupon" method="post" id="coupon-form">
+    <input type="text" name="couponCode" id="couponCode" placeholder="Enter coupon code">
+    <div id="couponMessage"></div>
+    <button class="btn" type="submit" id="applyCouponButton">Apply Coupon</button>
+</form>
+{{/if}}
+<hr>
+ {{#if address}}
+<h6 class="text-success"  data-toggle="modal" data-target="#addressModal">Have another address? Click to change address</h6>
+{{/if}}
+</div>
+
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-8">
+                           <h3>Billing Details</h3>
+                    {{#if address}}
+                    {{#each address}}
+                    {{#if this.primary}}
+                    <form class="row contact_form" action="" method="post" id="checkout-form">
+                       
+
+                   
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="first" name="fullname" value="{{this.name}}" readonly>
+
+                        </div>
+                     
+
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                value="{{this.phoneNumber}}" readonly>
+                                
+
+                            
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="phoneNumber2" name="phoneNumber2" value="{{this.phoneNumber}}" readonly>
+
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="email" name="email" value="{{this.email}}" readonly>
+
+                        </div>
+                        
+
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="address" name="address" value="{{this.address1}}" readonly>
+
+                        </div>
+
+
+                        
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="city" name="city" value="{{this.city}}" readonly>
+
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="country" name="country" value="{{this.country}}" readonly>
+
+                        </div>
+                      <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="state" name="state" value="{{this.state}}" readonly>
+
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="zip" name="pincode" value="{{this.pin}}" readonly>
+                        </div>
+                    {{/if}}
+
+                    {{/each}}
+                   {{else}}
+                    <button class="btn" style="color:white; background-color:#fe7200; border-color:#fe7200" onclick="redirectToAddAddress()">Add Address</button>
+                    {{/if}}
+                    </div>
+                    <div class="col-lg-4 mt-4">
+                        <div class="order_box">
+                            <h2>Your Order</h2>
+                            <ul class="list">
+                                <li><a href="#">Product <span>Total</span></a></li>
+                                  {{#each products}}
+                                <li><a href="#">{{this.product.productName}}<span class="middle">x {{this.quantity}} </span> <span class="last">₹{{this.total}}/-</span></a></li>
+                                   {{/each}}
+                            </ul>
+                            <ul class="list list_2">
+                                <li><a href="#">Subtotal <span>₹{{this.carttotal}}/-</span></a></li>
+                                {{#if this.coupon}}
+                               <li><span class="text-success text-center">Coupon Applied</span></li>
+                               {{/if}}
+                               {{#if declined}}
+                               <li><span class="text-danger text-center">Coupon Removed apply again...</span></li>
+                               {{/if}}
+                                <li><a href="#">Total <span>₹{{this.total}}/-</span></a></li>
+                            </ul>
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option5" name="payment-method" value="COD" required>
+                                    <label for="f-option5">COD</label>
+                                    <div class="check"></div>
+                                </div>
+                            
+                            </div>
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option6" name="payment-method" value="ONLINE" required>
+                                    <label for="f-option6">Razorpay</label>
+                                    
+                                    <div class="check"></div>
+                                </div>
+                               
+                            </div>
+                               <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option7" name="payment-method" value="WALLET" required>
+                                    <label for="f-option7">WALLET </label>
+                                    
+                                    <div class="check"></div>
+                                </div>
+                               
+                            </div>
+                            
+                             <button style="border-color: #fe7200;" type="submit" class="primary-btn mx-auto" id="checkoutButton">Proceed to
+                            Checkout</button>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          </form>  
+    </section>
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addressModalLabel">Select Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    {{#if address}}
+                        <div class="card-body">
+                            <div class="row">
+                                {{#each address}}
+                                <div class="col-md-6">
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <h6 class="card-subtitle mb-2 text-muted">Address</h6>
+                                            <p class="card-text">Name: {{this.name}}</p>
+                                            <p class="card-text">Email: {{this.email}}</p>
+                                            <p class="card-text">Phone: {{this.phoneNumber}}</p>
+                                            <p class="card-text">Address: {{this.address1}}</p>
+                                            <p class="card-text">City: {{this.city}}</p>
+                                            <p class="card-text">Pin: {{this.pin}}</p>    
+                                        </div>
+                                        <button class="quantity-btn btn-success make-primary-btn" data-address-id="{{this._id}}">Choose Address</button>
+
+                                    </div>
+                                    
+                                </div>
+                                {{/each}}
+                            </div>
+                            
+                        </div>
+                    {{else}}
+                    <h1>Add your address here..</h1>
+                    {{/if}}
+                    <input type="hidden" id="walletAmount" value="{{user.walletAmount}}">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="/javascripts/placeorder.js"></script>

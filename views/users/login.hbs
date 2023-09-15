@@ -1,0 +1,100 @@
+<!--================Login Box Area =================-->
+<section class="login_box_area section_gap mt-5">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="login_box_img">
+					<img class="img-fluid" src="img/login.jpg" alt="">
+					<div class="hover">
+						<h4>New to our website?</h4>
+						<p>There are advances being made in science and technology every day, and a good example of this
+							is the</p>
+						<a class="primary-btn" href="/signup">Create an Account</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="login_form_inner">
+					<h3>Log in to enter</h3>
+					{{#if signupMessage}}
+					<h5 class="text-success">OTP verification successful!!!</h5>
+					{{/if}}
+
+					{{#if passwordReset}}
+					<h5 class="text-success">Password Changed successfully!!!</h5>
+					{{/if}}
+					<form class="row login_form" action="/login" method="post" id="loginForm">
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="username" name="email" placeholder="Username"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+							<p class="error text-danger" id="usernameError"></p>
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="password" class="form-control" id="password" name="password"
+								placeholder="Password" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Password'">
+							<p class="error text-danger" id="passwordError"></p>
+						</div>
+						<div class="col-md-12 form-group">
+							{{#if loginErr}}
+							<p class="error text-danger">Invalid username or password</p>
+							{{/if}}
+							{{#if verifyError}}
+							<p class="text-danger">email not verified</p>
+							{{/if}}
+							{{#if notVerified}}
+							<p class="text-danger">email not verified</p>
+							{{/if}}
+							{{#if blocked}}
+							<p class="text-danger">{{blocked}}</p>
+							{{/if}}
+						</div>
+
+						<div class="col-md-12 form-group">
+							<button type="submit" value="submit" class="primary-btn">Log In</button>
+							<a href="/otp">OTP Login</a>
+							<a href="/forgot-password">Forgot Password?</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================End Login Box Area =================-->
+
+
+
+<script>
+	function validateForm(event) {
+		event.preventDefault(); // Prevent form submission
+
+		var username = document.getElementById('username').value.trim();
+		var password = document.getElementById('password').value.trim();
+
+		// Reset previous error messages
+		document.getElementById('usernameError').textContent = '';
+		document.getElementById('passwordError').textContent = '';
+
+		var isValid = true;
+
+		// Validate username field
+		if (username === '') {
+			document.getElementById('usernameError').textContent = 'Please enter your username.';
+			isValid = false;
+		}
+
+		// Validate password field
+		if (password === '') {
+			document.getElementById('passwordError').textContent = 'Please enter your password.';
+			isValid = false;
+		}
+
+		if (isValid) {
+			// Form is valid, proceed with form submission
+			document.getElementById('loginForm').submit();
+		}
+	}
+
+	document.getElementById('loginForm').addEventListener('submit', validateForm);
+</script>

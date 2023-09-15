@@ -1,0 +1,131 @@
+<style>
+    .butt {
+
+
+        width: 98vh;
+        height: 5vh;
+        margin-top: 2vh;
+        margin-left: 2vh;
+        background-color: #fe7200;
+        color: aliceblue;
+    }
+
+    .custom-select {
+
+
+        height: 5vh;
+        width: 48vh;
+
+
+    }
+</style>
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Add details</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">Add Details</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_gap">
+    <div class="container">
+
+
+        <div class="billing_details">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3>Enter Your Details Here...</h3>
+                    <form class="row contact_form" action="/add-details" method="post" id="checkout-form">
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="first" name="firstname"
+                                placeholder="First name">
+
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="last" name="lastname" placeholder="Last name">
+
+                        </div>
+
+                        <div class="col-md-6 form-group p_star">
+                            <input type="tel" class="form-control" id="number" name="phonenumber"
+                                placeholder="Phone number">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="tel" class="form-control" id="number" name="phonenumber2"
+                                placeholder=" Phone number 2">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <select class="form-control custom-select" id="gender" name="gender">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Email Address">
+                        </div>
+
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="add1" name="add1"
+                                placeholder="Permanent Address">
+
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="add2" name="add2" placeholder="Address 2">
+                        </div>
+                         <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="add2" name="street" placeholder="Street name">
+                        </div>
+                         <div class="col-md-12 form-group p_star">
+                            <input type="number" class="form-control" id="add2" name="housenumber" placeholder="House number">
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="Town/City">
+
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+
+                            <select class="country_select" name="district">
+                                <option value="kottayam">kottayam</option>
+                                <option value="kollam">kollam</option>
+                                <option value="kasargod">kasargod</option>
+                                <option value="vayanad">vayanad</option>
+                                <option value="idukkki">idukkki</option>
+                                <option value="eranakulam">eranakulam</option>
+                                <option value="kozhikkod">kozhikkod</option>
+                                <option value="thiruvanandhapuram">thiruvanandhapuram</option>
+                                <option value="pathanamthitta">pathanamthitta</option>
+                                <option value="malappuram">malappuram</option>
+                                <option value="kannur">kannur</option>
+                                <option value="Alappuzha">Alappuzha</option>
+                                <option value="Thrissur">Thrissur</option>
+                                <option value="palakkad">palakkad</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="zip" name="pincode" placeholder="Postcode/ZIP">
+                        </div>
+
+                        <button type="submit" class="btn  butt" id="checkoutButton">Submit Details</button>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Checkout Area =================-->
+

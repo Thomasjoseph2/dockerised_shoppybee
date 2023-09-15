@@ -1,0 +1,94 @@
+
+{{!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script> --}}
+<style>
+  .popup-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f23434;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: none;
+    color: aliceblue;
+  }
+</style>
+<div class="popup-message" id="popupMessage"></div>
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Wish List</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="category.html">Cart</a>
+                    </nav>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    <!-- End Banner Area -->  
+    <section>
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive mt-3">
+                    <table class="table" id="myTable">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <h5>Image</h5></th>
+                                <th scope="col"> <h5>Description</h5></th>
+                                <th scope="col"> <h5>Price</h5></th>
+                                <th scope="col"> <h5>Add</h5></th>
+                                 <th scope="col"> <h5>Remove</h5></th>
+                               
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{#each products}}
+                            <tr>
+                                 <td>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <img style="width:14vh;height:10vh"
+                                            src="/product-images/{{images.[0]}}" alt="">
+                                    </div>
+                                    <div class="media-body">
+                                        <p>{{this.productName}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                              
+                                <td>{{this.productDescription}}</td>
+                                <td>
+                                    <h5>₹{{this.productPrice}}/-</h5>
+                                </td>
+                                <td >
+                                    <button class="quantity-btn " style="background-color: #f2ae0f;color:antiquewhite;border-color:#f2ae0f"
+                                     onclick="addToCart('{{this._id}}')">Add To Cart</button>
+                                    
+                                </td>
+                               <td >
+                                  <button class="quantity-btn btn-danger"
+                                    onclick="removeProductFromWishlist('{{this._id}}')">Remove Item</button>
+                               </td>
+              
+                            </tr>
+                           {{/each}}
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--================End Cart Area =================-->
+
+   
+    <script src="/javascripts/wishlist.js"></script>

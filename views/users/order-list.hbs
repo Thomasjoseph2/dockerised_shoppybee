@@ -1,0 +1,152 @@
+<script>
+    $(document).ready(function () {
+        $('#mytable').DataTable({
+            "order": [[0, "desc"]], // Sort the first column (index 0) in descending order
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "pageLength": 5 // Set the initial page length to 5
+        });
+    });
+</script>
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Order List</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Cart</a>
+                </nav>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <form id="filterForm" class="form-inline" method="GET" action="/order-list">
+                <div class="form-group mr-2">
+                    <select name="status" class="form-control" onchange="submitFilterForm()">
+                        <option value="">Select Status</option>
+                        <option value="approved">Approved</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="pending">Pending</option>
+                        <option value="cancelrequest">Cancel Requested</option>
+                        <option value="returnrequest">Return Requested</option>
+                        <option value="delivered">Delivered</option>
+                    </select>
+                </div>
+                <div class="form-group mr-2">
+                    <select name="paymentMethod" class="form-control" onchange="submitFilterForm()">
+                        <option value="">Select Payment Method</option>
+                        <option value="COD">COD</option>
+                        <option value="ONLINE">ONLINE</option>
+                        <option value="WALLET">WALLET</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-danger form-group mr-2">Apply Filters</button>
+
+            </form>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Cart Area =================-->
+<section class="cart_area">
+    <div class="container">
+
+        <div class="cart_inner ">
+            <div class="">
+                <table class="table  " id="mytable">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">
+                                <h6 style="color:#fe7200">Date</h6>
+                            </th>
+                            <th scope="col">
+                                <h6 style="color:#fe7200">order Id</h6>
+                            </th>
+                            <th scope="col">
+                                <h6 style="color:#fe7200">Total Price</h6>
+                            </th>
+                            <th scope="col">
+                                <h6 style="color:#fe7200">Method</h6>
+                            </th>
+                            <th scope="col">
+                                <h6 style="color:#fe7200">Status</h6>
+                            </th>
+                            <th scope="col">
+                                <h6 style="color:#fe7200">Adminstatus</h6>
+                            </th>
+                            <th scope="col">
+                                <h6 style="color:#fe7200">Orders</h6>
+                            </th>
+                            <th scope="col">
+                                <h6 style="color:#fe7200">Options</h6>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {{#each orderdetails}}
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    {{this.date}}
+                                </div>
+                            </td>
+                            <td>{{this._id}}</td>
+                            <td>
+                                <h5>₹{{this.totalAmound}}/-</h5>
+                            </td>
+                            <td>
+                                <h5>{{this.paymentMethod}}</h5>
+                            </td>
+                            <td>
+                                <h5>{{this.status}}</h5>
+                            </td>
+                            <td>
+                                <h5>{{this.OrderStatus}}</h5>
+                            </td>
+                            <td>
+                                <form method="POST" action="/users/order-summary">
+                                    <button style="color:aliceblue;background-color:#fe7200;border-color:#fe7200"
+                                        name="orderId" value="{{this._id}}" type="submit"
+                                        class="quantity-btn">View</button>
+                                </form>
+                            </td>
+                            <td>
+                                {{#if (eq this.OrderStatus "approved")}}
+                                <button class="quantity-btn btn-danger"
+                                    onclick="cancelOrder('{{this._id}}')">Cancel</button>
+                                {{else if (eq this.OrderStatus "shipped")}}
+                                <button class="quantity-btn btn-danger"
+                                    onclick="cancelOrder('{{this._id}}')">Cancel</button>
+                                {{else if (eq this.OrderStatus "pending")}}
+                                <button class="quantity-btn btn-danger"
+                                    onclick="cancelOrder('{{this._id}}')">Cancel</button>
+                                {{else if (eq this.OrderStatus "cancelrequest")}}
+                                <button class="quantity-btn btn-danger">Requested</button>
+                                {{else if (eq this.OrderStatus "returnrequest")}}
+                                <button class="quantity-btn btn-danger"
+                                    onclick="returnOrder('{{this._id}}')">Requested</button>
+                                {{else if (eq this.OrderStatus "delivered")}}
+                                <button class="quantity-btn btn-danger"
+                                    onclick="returnOrder('{{this._id}}')">Return</button>
+                                {{/if}}
+                            </td>
+
+
+
+
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Cart Area =================-->
+
+
+<script src="/javascripts/user-order-list.js"></script>

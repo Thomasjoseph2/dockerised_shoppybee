@@ -1,0 +1,179 @@
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <style>
+
+    #growthChartContainer {
+      height: 400px; /* Set a fixed height for the chart container */
+      max-height: 400px; /* Specify a maximum height to prevent the chart from growing */
+      overflow: auto; /* Add scrollbars when needed */
+    }
+    
+  </style>
+
+  <div class="container mt-5">
+    <h1 >Sales Report</h1>
+
+  <div class="row">
+  <div class="col-md-4">
+    <div class="card mt-5">
+        <a style="text-decoration: none;" href="/admin/yearly-sales-table">
+      <div class="card-body" style="background-color:#fe7200;color:yellow">
+         {{#if yearlySales}}
+         {{#each yearlySales}}
+        <h2 class="card-title" style="color:aliceblue">Yearly Sales : {{@key}}</h2>
+        <p class="card-text"> ₹ {{this}}/-</p>
+        {{else}}
+        <h2 class="card-title" style="color:aliceblue">Yearly Sales :</h2>
+            <p class="card-text">₹ 0/-</p>
+        {{/each}}
+        {{/if}}
+      </div>
+      </a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card mt-5">
+       <a style="text-decoration: none;" href="/admin/monthly-sales-table">
+      <div class="card-body" style="background-color:#fe7200;color:yellow">
+        <h2 class="card-title" style="color:aliceblue">This Month</h2>
+         {{#if monthlySales}}
+         {{#each monthlySales}}
+        
+        <p class="card-text"> ₹ {{this}}/-</p>
+        {{else}}
+            <p class="card-text">₹ 0/-</p>
+        {{/each}}
+        {{/if}}
+      </div>
+     </a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card mt-5">
+      <div class="card-body" style="background-color:#fe7200;color:yellow">
+        <h2 class="card-title" style="color:aliceblue">This Week</h2>
+        {{#if weeklySales}}
+         {{#each weeklySales}}
+        <p class="card-text">₹ {{this}}/-</p>
+         {{else}}
+            <p class="card-text">₹ 0/-</p>
+        {{/each}}
+     
+       
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add a link to trigger the download -->
+<a class="btn  mt-2" style="background-color:#fe7200;color:white" href="/admin/download-sales-report" download>Download Sales Report</a>
+
+
+    <div class="row">
+      <div class="col-md-12 mt-5">
+        <h2 style="color:#fe7200">Monthly Sales</h2>
+        <hr>
+        <table class="table " id="myTable">
+          <thead>
+            <tr>
+              <th style="color:#fe7200">Month</th>
+              <th style="color:#fe7200">Sales</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each monthlyAllSales}}
+            <tr>
+              <td>{{@key}}</td>
+              <td>₹ {{this}}/-</td>
+            </tr>
+            {{/each}}
+           
+          </tbody>
+        </table>
+      </div>
+    </div>
+     
+     <div class="row">
+      <div class="col-md-6">
+        <h2 style="color:#fe7200">Growth Chart</h2>
+        <hr class="text-success">
+        <div id="growthChartContainer">
+          <canvas id="growthChart"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6">
+      <div class="col-md-12">
+        <h2 style="color:#fe7200">Payment Methods</h2>
+        <hr>
+        <div id="paymentMethodsChartContainer">
+          <canvas id="paymentMethodsChart"></canvas>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+<input type="hidden" id="yearlySalesData" value="{{yearlySalesData}}">
+<input type="hidden" id="yearlyLabels" value="{{yearlyLabels}}">
+
+<script>
+  var yearlySalesData = document.getElementById('yearlySalesData').value;
+  var yearlyLabels = document.getElementById('yearlyLabels').value;
+
+  // Convert the yearlySalesData and yearlyLabels to an array
+  var yearlySalesDataArray = yearlySalesData.split(',');
+  var yearlyLabelsArray = yearlyLabels.split(',');
+
+  // Pass the array to the chart
+  var ctx = document.getElementById('growthChart').getContext('2d');
+  var growthChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: yearlyLabelsArray,
+      datasets: [{
+        label: 'Sales Growth',
+        data: yearlySalesDataArray,
+        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+        borderColor: 'rgba(0, 123, 255, 1)',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function (value) {
+              return '₹' + value.toLocaleString();
+            }
+          }
+        }
+      }
+    }
+  });
+
+
+  // Modify the paymentMethodsData and paymentMethodsLabels to use handlebars variables
+  var paymentMethodsData = [{{ONLINE}}, {{WALLET}}, {{COD}}];
+  var paymentMethodsLabels = ['ONLINE', 'WALLET', 'COD'];
+
+  // Pass the data to the pie chart
+  var ctxPaymentMethods = document.getElementById('paymentMethodsChart').getContext('2d');
+  var paymentMethodsChart = new Chart(ctxPaymentMethods, {
+    type: 'pie',
+    data: {
+      labels: paymentMethodsLabels,
+      datasets: [{
+        data: paymentMethodsData,
+        backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)'],
+        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+</script>

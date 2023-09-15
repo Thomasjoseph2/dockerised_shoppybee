@@ -1,0 +1,156 @@
+<!--================Login Box Area =================-->
+<section class="login_box_area section_gap mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="login_box_img">
+          <img class="img-fluid" src="img/login.jpg" alt="">
+          <div class="hover">
+            <h4>New to our website?</h4>
+            <p>There are advances being made in science and technology every day, and a good example of this is the</p>
+            <a class="primary-btn" href="/signup">Create an Account</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="login_form_inner">
+          <h3>Log in to enter</h3>
+          <form class="row login_form" action="/send-otp" method="POST" id="contactForm">
+            <div class="col-md-12 form-group">
+              <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'">
+              <p id="phoneNumberError" class="error text-danger"></p>
+              <div class="text-danger" id="timer"></div>
+              {{#if phoneError}}
+              <p class="error text-danger">{{phoneError}}</p>
+              {{/if}}
+              {{#if blocked}}
+              <p class="error text-danger">{{blocked}}</p>
+              {{/if}}
+            </div>
+            <div class="col-md-12 form-group">
+              <button id="sendOtpBtn" type="submit" class="primary-btn">Send OTP</button>
+            </div>
+          </form>
+          <form class="row login_form" action="/verify-otp" method="POST" id="verifyOtpForm">
+            <div class="col-md-12 form-group">
+              <input type="text" class="form-control" id="otp" name="otp" placeholder="OTP" onfocus="this.placeholder = ''" onblur="this.placeholder = 'OTP'">
+              <p id="otpError" class="error text-danger"></p>
+            </div>
+            <div class="col-md-12 form-group">
+              <!-- Add this code where you want to display the error message -->
+              {{#if otpError}}
+              <p class="error text-danger">{{otpError}}</p>
+              {{/if}}
+            </div>
+            <div class="col-md-12 form-group">
+              <button type="submit" class="primary-btn">Log In</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================End Login Box Area =================-->
+
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    validatePhoneNumber();
+  });
+
+  document.getElementById('verifyOtpForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    validateOTP();
+  });
+
+  function validatePhoneNumber() {
+    const phoneNumberInput = document.getElementById('phoneNumber');
+    const phoneNumberError = document.getElementById('phoneNumberError');
+
+    const phoneNumber = phoneNumberInput.value.trim();
+
+    phoneNumberError.textContent = '';
+
+    if (phoneNumber === '') {
+      phoneNumberError.textContent = 'Please enter your phone number.';
+    } else if (!isValidPhoneNumber(phoneNumber)) {
+      phoneNumberError.textContent = 'Please enter a valid phone number.';
+    } else {
+      // If the phone number is valid, submit the form
+      document.getElementById('contactForm').submit();
+    }
+  }
+
+  function validateOTP() {
+    const otpInput = document.getElementById('otp');
+    const otpError = document.getElementById('otpError');
+
+    const otp = otpInput.value.trim();
+
+    otpError.textContent = '';
+
+    if (otp === '') {
+      otpError.textContent = 'Please enter the OTP.';
+    } else {
+      // If the OTP is provided, submit the form
+      document.getElementById('verifyOtpForm').submit();
+    }
+  }
+
+  function isValidPhoneNumber(phoneNumber) {
+    // Regular expression to match a valid phone number format
+    const phoneRegex = /^\d{10}$/;
+
+    // Test the phone number against the regex
+    return phoneRegex.test(phoneNumber);
+  }
+
+  // Function to start the timer
+  function startTimer(duration, displayElement, buttonElement) {
+    let timer = duration;
+    let minutes;
+    let seconds;
+
+    // Function to update the timer display
+    function updateTimer() {
+      minutes = Math.floor(timer / 60);
+      seconds = timer % 60;
+
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+
+      displayElement.textContent = minutes + ':' + seconds;
+
+      // When the timer reaches 0, stop the timer and enable the button with "Resend OTP" text
+      if (timer <= 0) {
+        clearInterval(timerInterval);
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Resend OTP';
+      }
+
+      timer--;
+    }
+
+    // Initial update
+    updateTimer();
+
+    // Start the timer interval
+    let timerInterval = setInterval(updateTimer, 1000);
+  }
+
+  // Event listener for the "Send OTP" button
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    validatePhoneNumber();
+
+    // If the phone number is valid, start the timer and modify the button
+    if (!document.getElementById('phoneNumberError').textContent) {
+      const timerDisplay = document.getElementById('timer');
+      const sendOtpBtn = document.getElementById('sendOtpBtn');
+      sendOtpBtn.textContent = '';
+      startTimer(20, timerDisplay, sendOtpBtn);
+    }
+  });
+</script>

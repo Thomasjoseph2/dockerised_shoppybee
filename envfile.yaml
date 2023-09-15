@@ -1,0 +1,15 @@
+version: '3'
+services:
+  myapp:
+    image: thomasjoseph1/project:v2  
+    ports:
+     - 3000:4000
+    environment:
+      - ACCOUNT_SID=AC3d28d77a88183ef2695e962fdb125248
+      - AUTH_TOKEN=0a5dc05931d9beb0b0069a9ca1e32367
+      - VERIFY_SID=VA4f89b10c7da39304caf987482707ea03
+      - USER_EMAIL=t46465280@gmail.com
+      - PASSWORD=ptgiodvhzdvjukzh
+      - KEY_ID=rzp_test_4VSqO0TCBFvtCE
+      - KEY_SECRET=4iUcWrjuqM0RKejSrKHisBif
+      

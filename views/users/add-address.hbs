@@ -1,0 +1,199 @@
+
+
+
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Address Details</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="/cart">Cart</a>
+                    </nav>
+                </div>
+            </div>
+            
+        </div>
+       
+    <div class="col-lg-3 mr-auto " style="margin-left: 25vh; margin-bottom:4vh">
+      <button style="background-color: #f2ab05;color:white;" class="btn  mr-auto" data-toggle="modal" data-target="#addAddressModal">Add Address</button>
+    </div>
+
+    </section>
+    <section class="container">
+   
+
+<div class="card">
+    {{#if address}}
+  <div class="card-body">
+  <div class="row">
+    {{#each address}}
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-muted">Address</h6>
+              <p class="card-text">Name: {{this.name}}</p>
+              <p class="card-text">Email: {{this.email}}</p>
+              <p class="card-text">Phone: {{this.phoneNumber}}</p>
+              <p class="card-text">Address: {{this.address1}}</p>
+              <p class="card-text">City: {{this.city}}</p>
+              <p class="card-text">Pin: {{this.pin}}</p>
+              {{#if this.primary}}
+              <button class="quantity-btn btn-success make-primary-btn ">Primary</button>
+              {{else}}
+              <button class="quantity-btn btn-primary make-primary-btn"
+                onclick="makePrimary('{{this._id}}')">Make Primary</button>
+                <button class="quantity-btn btn-danger" onclick="removeAddress('{{this._id}}')">Remove Address</button>
+              {{/if}}
+              
+            </div>
+          </div>
+        </div>
+        {{/each}}
+      
+       
+         
+       
+  </div>
+</div>
+{{else}}
+<h1>Add your address here..</h1>
+
+  {{/if}}
+</div>
+<!-- Add Address Modal -->
+<div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addAddressModalLabel">Add Address</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addAddressForm" action="/add-address" method="post">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" class="form-control" id="phone" name="phoneNumber" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone 2</label>
+            <input type="tel" class="form-control" id="phone" name="phoneNumber2" required>
+          </div>
+          <div class="form-group">
+            <label for="name">Email</label>
+            <input type="text" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="address1">Address Line 1</label>
+            <input type="text" class="form-control" id="address1" name="address1" required>
+          </div>
+         
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="city">City</label>
+              <input type="text" class="form-control" id="city" name="city" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="state">State</label>
+              <input type="text" class="form-control" id="state" name="state" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="zip">pin</label>
+              <input type="text" class="form-control" id="zip" name="pin" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="country">Country</label>
+              <input type="text" class="form-control" id="country" name="country" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Address</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+ </section>
+   <script>
+function removeAddress(addId) {
+  Swal.fire({
+    title: 'Remove Address',
+    text: 'Are you sure you want to remove this address?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, remove it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: '/remove-address',
+        data: {
+          addressId: addId
+        },
+        method: 'post',
+        success: function(response) {
+          if (response.addressRemoved) {
+            showPopupMessage('Address removed', 'success');
+            setTimeout(function() {
+              location.reload();
+            }, 1000);
+          } else {
+            showPopupMessage('Failed to remove address', 'error');
+          }
+        },
+        error: function() {
+          showPopupMessage('Error occurred while removing address', 'error');
+        }
+      });
+    }
+  });
+}
+
+function showPopupMessage(message, type) {
+  Swal.fire({
+    text: message,
+    icon: type,
+    timer: 3000,
+    showConfirmButton: false
+  });
+}
+
+
+
+  function makePrimary(addressId) {
+    $.ajax({
+      url: '/make-primary-address',
+      data: {
+        addressId: addressId
+      },
+      method: 'post',
+      success: function(response) {
+        if (response.addressMadePrimary) {
+             showPopupMessage('Primary address added', 'success');
+            setTimeout(function() {
+              location.reload();
+            }, 1000);
+       
+        } else {
+          console.log(response.error);
+          location.href='/error-page'
+        }
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  }
+
+
+   </script>

@@ -1,0 +1,228 @@
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Shopping Cart</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/cart">Cart</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================Cart Area =================-->
+<section class="cart_area mt-5">
+    <div class="container">
+        <div class="cart_inner">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th> 
+                            <th scope="col">Quantity</th>
+                           <th scope="col">Offer</th>
+                           <th scope="col">Remove</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="cart-items">
+                        {{#each products}}
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <img style="width:14vh;height:10vh"
+                                            src="/product-images/{{product.images.[0]}}" alt="">
+                                    </div>
+                                    <div class="media-body">
+                                        <p>{{this.product.productName}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                           
+                            <td>
+                                <h5>₹{{this.product.productPrice}}/-</h5>
+                            </td>
+                            
+
+
+                            <td>
+                                <div class="product_count">
+                                    <input id="{{this.product._id}}" type="text" name="qty" maxlength="12"
+                                        value="{{this.quantity}}" title="Quantity:" class="input-text qty" readonly>
+                                    <button
+                                        onclick="changeQuantity('{{this._id}}', '{{this.product._id}}','{{../user._id}}' ,1);"
+                                        class="increase items-count" type="button"><i
+                                            class="lnr lnr-chevron-up"></i></button>
+                                    <button
+                                        onclick="changeQuantity('{{this._id}}', '{{this.product._id}}', '{{../user._id}}',-1);"
+                                        class="reduced items-count" type="button"><i
+                                            class="lnr lnr-chevron-down"></i></button>
+                                </div>
+                            </td>
+                             <td>
+                                <h5 class="text-success">{{this.appliedOfferValue}}%</h5>
+                            </td>
+
+
+
+   
+
+                            <td><button class="quantity-btn btn-danger"
+                                    onclick="removeProductFromCart('{{this._id}}','{{this.product._id}}')">Remove</button>
+                            </td>
+
+                        </tr>
+                       <input type="hidden" id="productQuantity-{{this.product._id}}" value="{{this.product.productQuantity}}">
+
+                        {{/each}}
+
+                        <tr class="bottom_button">
+                            <td>
+                                <a class="gray_btn" href="#">SHOPPYBEE</a>
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <h5>Subtotal</h5>
+                            </td>
+                            <td>
+                                <h5>₹<span id="totl">{{this.Carttotal}}</span>/-</h5>
+                            </td>
+                        </tr>
+                    
+                        <tr class="out_button_area">
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+
+                                <div class="checkout_btn_inner d-flex align-items-center">
+                                    <a class="gray_btn" href="/">Continue Shopping</a>
+                                    {{#if products}}
+                                    <a class="primary-btn" href="/place-order">Proceed to checkout</a>
+                                    {{/if}}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+function changeQuantity(cartId, proId, userId, count) {
+  let quantity = parseInt(document.getElementById(proId).value);
+  const newQuantity = quantity + parseInt(count);
+
+  // Get the maximum quantity allowed for the product
+  const maxQuantity = parseInt(document.getElementById(`productQuantity-${proId}`).value);
+
+  if (newQuantity > maxQuantity) {
+    // Show an alert for exceeding the product quantity
+    Swal.fire({
+      icon: 'error',
+      text: 'Maximum order quantity exceeded'
+    });
+    return; // Stop further execution
+  }
+
+  $.ajax({
+    url: '/change-product-quantity',
+    data: {
+      user: userId,
+      cart: cartId,
+      product: proId,
+      count: count,
+      quantity: newQuantity
+    },
+    method: 'post',
+    success: (response) => {
+      if (response.cartProductRemoved) {
+        Swal.fire({
+          icon: 'success',
+          text: 'Product removed from cart'
+        }).then(() => {
+          location.reload();
+        });
+      } else {
+        console.log(response);
+        document.getElementById(proId).value = newQuantity;
+        document.getElementById("totl").innerHTML = response.Carttotal;
+
+        const eachTotalArray = response.eachTotal;
+
+        eachTotalArray.forEach(eachTotalObject => {
+          const eachTotalElement = document.getElementById(eachTotalObject.productId);
+          if (eachTotalElement) {
+            eachTotalElement.innerHTML = eachTotalObject.total;
+          } else {
+            console.error("Element not found for product with ID " + eachTotalObject.productId);
+          }
+        });
+      }
+    }
+  });
+}
+
+
+  function removeProductFromCart(cartId, productId) {
+    Swal.fire({
+      title: 'Remove Product',
+      text: 'Are you sure you want to remove this product from the cart?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/delete-product-from-cart',
+          data: {
+            cart: cartId,
+            product: productId,
+          },
+          method: 'post',
+          success: (response) => {
+            if (response.cartProductRemoved) {
+              Swal.fire({
+                icon: 'success',
+                text: 'Product removed from cart'
+              }).then(() => {
+                location.reload();
+              });
+            }
+          }
+        });
+      }
+    });
+  }
+</script>

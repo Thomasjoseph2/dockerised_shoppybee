@@ -1,0 +1,44 @@
+
+<section style="margin-top: 20vh;">
+  <div class="container">
+    <div class="row mt-4">
+      
+   
+
+    </div>
+    <table class="table mt-5 " id="usersTable" >
+      <thead>
+        <tr>
+
+          <th scope="col">Full Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col">User id</th>
+          <th scope="col">Unblock</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each users}}
+        <tr>
+
+          <td>{{this.name}}</td>
+          <td>{{this.email}}</td>
+          <td>{{this.phone}}</td>
+          <td>{{this._id}}</td>
+
+        <td>
+  <a href="/admin/unblock-user?id={{this._id}}" class="btn btn-info unblock-user" data-name="{{this.name}}">
+    Unblock
+  </a>
+</td>
+
+
+        </tr>
+        {{/each}}
+
+      </tbody>
+    </table>
+
+  </div>
+</section>
+<script src="/javascripts/blocked-users.js"></script>
