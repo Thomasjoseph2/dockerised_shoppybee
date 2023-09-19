@@ -1,17 +1,12 @@
-version: '3'
-services:
-  myapp:
-    image: thomasjoseph1/project:v2  
-    ports:
-     - 3000:4000
-    environment:
-      - ACCOUNT_SID= Replace with Twilio_sid
-      - AUTH_TOKEN= Replace with Twilio AUTH_TOKEN
-      - VERIFY_SID= Replace with Twilio VERIFY_SID
-      - USER_EMAIL=abcd@gmail.com
-      - PASSWORD=ABCDEFGHIJKLMNOP
-      - KEY_ID=rozerpay_key_id
-      - KEY_SECRET=Your razorpay key secreat
+docker run -p 3000:4000 \
+-e ACCOUNT_SID=YOUR_ACCOUNT_SID \
+-e AUTH_TOKEN=YOUR_AUTH_TOKEN \
+-e VERIFY_SID=YOUR_VERIFY_SID \
+-e USER_EMAIL=YOUR_USER_EMAIL \
+-e PASSWORD=YOUR_PASSWORD \
+-e KEY_ID=YOUR_KEY_ID \
+-e KEY_SECRET=YOUR_KEY_SECRET \
+thomasjoseph1/dockerised-shoppybee
 
-  you need to add all this credentials in the env.yaml file to run this contarainised project and use the  "docker-compose -f env.yaml up"
-  command to start
+
+add the creadintials and run the command u will be able to run the app in container
