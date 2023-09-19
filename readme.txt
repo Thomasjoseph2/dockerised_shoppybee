@@ -12,7 +12,6 @@ services:
       - PASSWORD=ABCDEFGHIJKLMNOP
       - KEY_ID=rozerpay_key_id
       - KEY_SECRET=Your razorpay key secreat
-      
 
   you need to add all this credentials in the env.yaml file to run this contarainised project and use the  "docker-compose -f env.yaml up"
   command to start
