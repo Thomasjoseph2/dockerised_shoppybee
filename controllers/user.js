@@ -44,7 +44,7 @@ const sendVerifyMail = async (name, email, userId) => {
 
       subject: "For verification mail",
 
-      html: '<p>Hi ' + name + ' ,please click here to <a href="http://localhost:3000/verify?id=' + userId + '">Verify </a>  your mail.</p> '
+      html: '<p>Hi ' + name + ' ,please click here to <a href="https://eshaal.shop/verify?id=' + userId + '">Verify </a>  your mail.</p> '
 
     }
 
@@ -839,7 +839,7 @@ sendForgotPasswordMail = async (name, email, token) => {
 
       subject: "For Reset Password",
 
-      html: '<p>Hi ' + name + ' ,please click here to <a href="http://localhost:3000/Change-password?token=' + token + '">Reset</a>  your  Password </p> '
+      html: '<p>Hi ' + name + ' ,please click here to <a href="https://eshaal.shop/Change-password?token=' + token + '">Reset</a>  your  Password </p> '
 
     }
 
