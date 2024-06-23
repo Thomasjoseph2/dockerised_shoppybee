@@ -42,6 +42,9 @@ db.connect((err)=>{
 })
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "success", message: "Health check passed" });
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
