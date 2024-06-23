@@ -101,10 +101,10 @@ $("#coupon-form").submit((e) => {
   });
   
   
-      function razorpayPayment(order) {
-        console.log(order)
+      async function razorpayPayment(order) {
+        console.log(order,'client')
           var options = {
-              "key": "rzp_test_4VSqO0TCBFvtCE", // Enter the Key ID generated from the Dashboard
+              "key": "rzp_test_3aKlYN0Jk5jqZX", // Enter the Key ID generated from the Dashboard
               "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
               "currency": "INR",
               "name": "ShoppyBee",
@@ -127,7 +127,7 @@ $("#coupon-form").submit((e) => {
                   "color": "#3399cc"
               }
           };
-          var rzp1 = new Razorpay(options);
+          var rzp1 = await new Razorpay(options);
            rzp1.open();
       }
       function verifypayment(payment,order){

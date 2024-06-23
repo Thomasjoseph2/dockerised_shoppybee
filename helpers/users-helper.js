@@ -12,7 +12,7 @@ const fs = require('fs');
 console.log(process.env.KEY_ID,"logged");
 var instance = new Razorpay({
   key_id: process.env.KEY_ID,
-  key_secret: process.env.KEY_SECREAT
+  key_secret: process.env.KEY_SECRET
 })
 
 
