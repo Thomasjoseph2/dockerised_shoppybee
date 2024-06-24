@@ -2,6 +2,9 @@
   "name": "webchallenge",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "16.20.2"
+  },
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www"
